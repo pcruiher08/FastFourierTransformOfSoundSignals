@@ -39,12 +39,7 @@ classdef tercerProyecto < matlab.apps.AppBase
 
         % Button pushed function: RecordButton
         function RecordButtonPushed(app, event)
-            %app.DryingMachineLamp.Color = 'white';
-            %app.WaterFlowingLamp.Color = 'white';
-            %app.PhoneRingtoneLamp.Color = 'white';
-            %app.CarClaxonLamp.Color = 'white';
-            %app.ComputerBootingLamp.Color = 'white';
-            
+  
             %RECORDING ROUNTINE AND SAVING
             audioObject = audiorecorder(8000,8,1);    
             msgbox('Inicia grabación');
@@ -66,10 +61,7 @@ classdef tercerProyecto < matlab.apps.AppBase
 
         % Button pushed function: DisplayButton
         function DisplayButtonPushed(app, event)
-            %audioObject = evalin('base', 'audioObject');
-            %soundFunction = getaudiodata(audioObject);
-            %Fs = audioObject.SampleRate;
-            
+
             %DISPLAY PLOT OF SOUND
             Fs = app.frequency;
             soundFunction = app.soundFunction;
@@ -82,22 +74,21 @@ classdef tercerProyecto < matlab.apps.AppBase
 
         % Button pushed function: TransformButton
         function TransformButtonPushed(app, event)
-            %audioObject = evalin('base', 'audioObject');
-            %soundFunction = getaudiodata(audioObject.app);
+     
             
             %FFT ALGORITHM
             fm = app.frequency;
-            Np=8192;                             % Número de puntos de la DFT
-            L=length(app.soundFunction);             % Longitud de la señal
-            Tm=(1/fm);                           % Tiempo de muestreo
-            Mp=ceil(Np/2);                       % Mitad de puntos de la FFT
-            wd=0:2*pi/Np:2*pi*(Np-1)/Np;         % Vector de Frec. discreta
-            wdo=zeros(1,Np);                     % Vector de Frec. disc. organizadas
-            wc=zeros(1,Np);                      % Vector de Frec. cont. en rad/seg
-            fc=zeros(1,Np);                      % Vector de Frec. cont. en Hz
-            z=abs(fft(app.soundFunction,Np));        % Magnitud de FFT de la señal
-            zo=zeros(1,Np);                      % Vector para reorganizar la FFT
-            t=0:Tm:Tm*(L-1);                     % Vector de tiempo
+            Np=8192;                            
+            L=length(app.soundFunction);             
+            Tm=(1/fm);                           
+            Mp=ceil(Np/2);                   
+            wd=0:2*pi/Np:2*pi*(Np-1)/Np;         
+            wdo=zeros(1,Np);                     
+            wc=zeros(1,Np);                     
+            fc=zeros(1,Np);                      
+            z=abs(fft(app.soundFunction,Np));      
+            zo=zeros(1,Np);                     
+            t=0:Tm:Tm*(L-1);                    
             % Reorganización de frecuencias
             wdo(Np-Mp+1:end)=wd(1:Mp);
             wdo(1:Np-Mp)=wd(Mp+1:end)-2*pi;
@@ -109,14 +100,7 @@ classdef tercerProyecto < matlab.apps.AppBase
             zo(1:Np-Mp)=z(Mp+1:end);
             M=zo;
             freq=fc;
-            %figure;
             plot(app.UIAxes2,freq,mag2db(M));
-            %plot(freq,mag2db(M));
-            %title('Magnitud de la transformada de Fourier');   
-            %xlabel('Frecuencia (Hz)');
-            %ylabel('Amplitude (dB)');
-            %disp("maxima frecuencia: " + max(M));
-            %disp("maxima magnitud en dB" + max(mag2db(M)))
             app.magnitude = M;
         end
 
@@ -155,11 +139,6 @@ classdef tercerProyecto < matlab.apps.AppBase
             [file path] = uigetfile({'D:\programacion\FastFourierTransformOfSoundSignals\*.wav'},'File selection');
             fullpath = strcat(path,file);
             app.FeedbackTextArea.Value = fullpath;
-            %app.EditField.set(fullpath);
-            
-          %  [y, Fs] = audioread();
-           %  app.soundFunction = y; 
-            % app.frequency = Fs;
         end
 
         % Button pushed function: SelectFileButton
