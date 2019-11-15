@@ -27,6 +27,8 @@ classdef tercerProyecto < matlab.apps.AppBase
     end
 
     properties (Access = public)
+        
+        %PUBLIC VARIABLES
         magnitude;
         %audioObject;
         soundFunction; 
@@ -42,6 +44,8 @@ classdef tercerProyecto < matlab.apps.AppBase
             %app.PhoneRingtoneLamp.Color = 'white';
             %app.CarClaxonLamp.Color = 'white';
             %app.ComputerBootingLamp.Color = 'white';
+            
+            %RECORDING ROUNTINE AND SAVING
             audioObject = audiorecorder(8000,8,1);    
             msgbox('Inicia grabación');
             recordblocking(audioObject,1);
@@ -65,6 +69,8 @@ classdef tercerProyecto < matlab.apps.AppBase
             %audioObject = evalin('base', 'audioObject');
             %soundFunction = getaudiodata(audioObject);
             %Fs = audioObject.SampleRate;
+            
+            %DISPLAY PLOT OF SOUND
             Fs = app.frequency;
             soundFunction = app.soundFunction;
             n=1;
@@ -78,6 +84,8 @@ classdef tercerProyecto < matlab.apps.AppBase
         function TransformButtonPushed(app, event)
             %audioObject = evalin('base', 'audioObject');
             %soundFunction = getaudiodata(audioObject.app);
+            
+            %FFT ALGORITHM
             fm = app.frequency;
             Np=8192;                             % Número de puntos de la DFT
             L=length(app.soundFunction);             % Longitud de la señal
@@ -115,13 +123,14 @@ classdef tercerProyecto < matlab.apps.AppBase
         % Button pushed function: CompareButton
         function CompareButtonPushed(app, event)
             magnitudeInDb = int16(mag2db(max(app.magnitude)));
+            %MAPPING OF MAGNITUDES
             maxMagnitudeWashingMachine = 25;
             maxMagnitudeFlowingWater = 30;
             maxMagnitudeComputerStarting = 33;
             maxMagnitudeCarClaxon = 44;
             maxMagnitudeTelephoneRingtone = 28;
             app.MaximumMagnitudeEditField.Value = int2str(magnitudeInDb);
-            
+            %SELECTION OF ALERT 3 PERCENT OF VARIATION
             app.DryingMachineLamp.Color = 'green';
             app.WaterFlowingLamp.Color = 'green';
             app.PhoneRingtoneLamp.Color = 'green';
@@ -155,6 +164,7 @@ classdef tercerProyecto < matlab.apps.AppBase
 
         % Button pushed function: SelectFileButton
         function SelectFileButtonPushed(app, event)
+            %FILE BROWSER SELECTION
             [y,Fs] = audioread(app.FeedbackTextArea.Value{1});
             app.soundFunction = y;
             app.frequency = Fs;
